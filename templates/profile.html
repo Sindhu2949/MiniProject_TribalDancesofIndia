@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ username }}'s Profile - Tribal Dance Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px;
+        }
+        h1 {
+            color: #00ffcc;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #ffcc00;
+            margin-top: 40px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #111;
+            border: 1px solid #444;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+        form {
+            display: inline;
+        }
+        button {
+            background-color: #ff3366;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: 0.3s ease;
+        }
+        button:hover {
+            background-color: #ff6699;
+        }
+        a {
+            color: #00ccff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .footer-link {
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🌟 Welcome, {{ username }} 🌟</h1>
+
+    {% if registered_workshops %}
+        <h2>📝 Your Registered Workshops</h2>
+        <ul>
+        {% for w in registered_workshops %}
+            <li>
+                <strong>{{ w.workshop_name }}</strong><br>
+                📅 Date: {{ w.date }}<br>
+                📍 Location: {{ w.location }}
+                <form method="POST" action="{{ url_for('unregister_workshop') }}">
+                    <input type="hidden" name="workshop_name" value="{{ w.workshop_name }}">
+                    <button type="submit">Unregister</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No workshops registered.</p>
+    {% endif %}
+
+    <div class="footer-link">
+        <p><a href="{{ url_for('logout') }}">🚪 Logout</a></p>
+    </div>
+</body>
+</html>

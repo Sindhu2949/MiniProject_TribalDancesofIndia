@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Upcoming Tribal Dance Workshops</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #fcd34d;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .tribal-box {
+      background-color: #1f1f1f;
+      border: 2px dashed #facc15;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 10px 0;
+      transition: transform 0.3s;
+    }
+    .tribal-box:hover {
+      transform: scale(1.02);
+      background-color: #292524;
+    }
+    .btn {
+      background-color: #facc15;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .btn:hover {
+      background-color: #fde047;
+    }
+  </style>
+</head>
+<body class="p-8">
+  <h1 class="text-4xl font-bold text-center mb-6">Upcoming Tribal Dance Workshops</h1>
+
+  <div class="max-w-2xl mx-auto">
+    <div class="tribal-box">
+      <h2 class="text-xl font-semibold">Warli Art & Dance - Maharashtra</h2>
+      <p>Date: July 10, 2025</p>
+      <p>Location: Pune Cultural Center</p>
+      <form action="/register_workshop" method="POST" class="mt-2">
+        <input type="hidden" name="workshop_name" value="Warli Art & Dance">
+        <button type="submit" class="btn">Register</button>
+      </form>
+    </div>
+
+    <div class="tribal-box">
+      <h2 class="text-xl font-semibold">Santhal Rhythms - Jharkhand</h2>
+      <p>Date: July 16, 2025</p>
+      <p>Location: Ranchi Tribal Academy</p>
+      <form action="/register_workshop" method="POST" class="mt-2">
+        <input type="hidden" name="workshop_name" value="Santhal Rhythms">
+        <button type="submit" class="btn">Register</button>
+      </form>
+    </div>
+
+    <div class="tribal-box">
+      <h2 class="text-xl font-semibold">Baiga Forest Dance - Chhattisgarh</h2>
+      <p>Date: July 22, 2025</p>
+      <p>Location: Raipur Kala Kendra</p>
+      <form action="/register_workshop" method="POST" class="mt-2">
+        <input type="hidden" name="workshop_name" value="Baiga Forest Dance">
+        <button type="submit" class="btn">Register</button>
+      </form>
+    </div>
+  </div>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="text-center mt-4 text-green-300">
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+</body>
+</html> 

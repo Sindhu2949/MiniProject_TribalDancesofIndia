@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat</title>
+  <style>
+    body { font-family: 'Segoe UI'; background: #f4f4f4; padding: 20px; }
+    .chat-box {
+      background: white; padding: 20px; max-width: 600px;
+      margin: auto; border-radius: 8px;
+      border: 1px solid #ccc; max-height: 300px; overflow-y: auto;
+    }
+    .chat-message { margin-bottom: 10px; }
+    form {
+      margin: 20px auto; max-width: 600px;
+    }
+    input, button {
+      width: 100%; padding: 10px;
+      margin-top: 10px; border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background: #333; color: white;
+      font-weight: bold; cursor: pointer;
+    }
+    button:hover { background: #555; }
+  </style>
+</head>
+<body>
+  <h2>Chat with {{ tutor[2] }}</h2>
+  <div class="chat-box">
+    {% for chat in chats %}
+      <div class="chat-message">
+        <strong>{{ 'You' if chat[1] == session['user_id'] else tutor[2] }}:</strong> {{ chat[3] }}
+      </div>
+    {% endfor %}
+  </div>
+
+  <form method="POST">
+    <input type="text" name="message" placeholder="Type your message..." required>
+    <button type="submit">Send</button>
+  </form>
+</body>
+</html>

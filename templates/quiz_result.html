@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz Results</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    .result-box {
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 15px auto;
+      width: 80%;
+      text-align: left;
+    }
+    .correct {
+      color: #0f0;
+    }
+    .wrong {
+      color: #f55;
+    }
+    h1 {
+      color: #ff4081;
+    }
+    .btn-container {
+      margin-top: 30px;
+    }
+    .btn {
+      background-color: #ff4081;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      margin: 10px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Score: {{ score }}/{{ total }}</h1>
+
+  {% for q, selected, correct in results %}
+    <div class="result-box">
+      <h3>{{ loop.index }}. {{ q }}</h3>
+      <p>Your Answer:
+        <span class="{{ 'correct' if selected == correct else 'wrong' }}">
+          {{ selected if selected else 'No Answer' }}
+        </span>
+      </p>
+      <p>Correct Answer: <span class="correct">{{ correct }}</span></p>
+    </div>
+  {% endfor %}
+
+  <div class="btn-container">
+    <a class="btn" href="{{ url_for('quiz') }}">🔁 Try Again</a>
+    <a class="btn" href="{{ url_for('shop') }}">🛒 Go to Shop</a>
+  </div>
+</body>
+</html>

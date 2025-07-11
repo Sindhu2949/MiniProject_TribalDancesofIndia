@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Tribal Vlog/Blog</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tribal_style.css') }}">
+</head>
+<body class="tribal-body">
+  <div class="tribal-container">
+    <h1 class="tribal-header">🪶 Share Your Tribal Journey</h1>
+    <form method="post" enctype="multipart/form-data" class="tribal-form">
+      <label>Title</label>
+      <input type="text" name="title" required>
+      <label>Content</label>
+      <textarea name="content" rows="6" required></textarea>
+      <label>Upload Image/Video</label>
+      <input type="file" name="media" accept="image/*,video/*">
+      <button type="submit" class="tribal-btn">Post</button>
+    </form>
+    <a href="/blog_feed" class="tribal-link">⬅ Back to Feed</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Order Confirmed</title>
+  <style>
+    body { background: #000; color: #0f0; text-align: center; padding-top: 80px; font-family: Arial; }
+    .box {
+      background: #111;
+      padding: 30px;
+      border-radius: 10px;
+      border: 2px dashed #0f0;
+      max-width: 500px;
+      margin: auto;
+    }
+    a {
+      color: #fff; background: #ff4081; padding: 10px 20px; text-decoration: none; border-radius: 8px;
+    }
+    a:hover { background: #e73370; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>✅ Order Confirmed</h1>
+    <p>Thank you {{ name }}!<br>Your order has been placed via <strong>Cash on Delivery</strong>.</p>
+    <a href="/">Back to Home</a>
+  </div>
+</body>
+</html>

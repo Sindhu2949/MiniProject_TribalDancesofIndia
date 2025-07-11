@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard - Tribal Dance Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Alatsi&family=Ubuntu:wght@300;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Ubuntu', sans-serif;
+      background-color: #0d0d0d;
+      color: #fff;
+    }
+
+    header {
+      background-color: #111;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+    }
+
+    header h1 {
+      font-family: 'Alatsi', sans-serif;
+      color: #ffd166;
+      font-size: 24px;
+    }
+
+    .dashboard {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .welcome {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .welcome h2 {
+      font-size: 2em;
+      color: #f4a261;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 30px;
+    }
+
+    .card {
+      background: #1a1a1a;
+      padding: 25px;
+      border-radius: 15px;
+      width: 280px;
+      box-shadow: 0 0 12px rgba(255, 204, 0, 0.1);
+      border: 2px dashed #ffd166;
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card h3 {
+      color: #ffd166;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #ccc;
+    }
+
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 60px;
+      gap: 20px;
+    }
+
+    .quick-links a {
+      background: #f4a261;
+      color: black;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .quick-links a:hover {
+      background: #ff7e5f;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #aaa;
+      font-size: 14px;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .cards {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .quick-links {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tribal Dance Dashboard</h1>
+    <div style="font-size: 14px; color: #bbb;">Welcome, {{ username }}</div>
+  </header>
+
+  <div class="dashboard">
+    <div class="welcome" data-aos="fade-down">
+      <h2>Namaste! Step into your rhythm 🌾</h2>
+      <p>Track your journey, access workshops, take cultural quizzes, and celebrate India’s tribal soul.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card" data-aos="zoom-in">
+        <h3>Quizzes Attempted</h3>
+        <p>12 quizzes completed</p>
+      </div>
+      <div class="card" data-aos="zoom-in" data-aos-delay="100">
+        <h3>Workshop Enrolled</h3>
+        <p>3 active workshops</p>
+      </div>
+      <div class="card" data-aos="zoom-in" data-aos-delay="200">
+        <h3>Items Purchased</h3>
+        <p>5 costumes & accessories</p>
+      </div>
+    </div>
+
+    <div class="quick-links" data-aos="fade-up">
+      <a href="/quiz">🎯 Take Quiz</a>
+      <a href="/shop">🛍️ Visit Shop</a>
+      <a href="/ar-vr">🎥 Learn in AR/VR</a>
+      <a href="#">🧠 AI Dance Tutor</a>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Tribal Dances of India Portal. Designed with rhythm 🌿.
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init();</script>
+</body>
+</html>

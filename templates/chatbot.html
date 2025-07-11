@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TribalDanceAI</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #000;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      color: #fff;
+    }
+    .sidebar {
+      width: 250px;
+      background: #111;
+      padding: 20px;
+      border-right: 1px solid #333;
+      overflow-y: auto;
+    }
+    .sidebar h2 {
+      color: #b8860b;
+      margin-bottom: 20px;
+      font-size: 18px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+    }
+    .chat-history {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .chat-history div {
+      background: #222;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .chat-history div:hover {
+      background: #333;
+    }
+    .chat-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .header-title {
+      background: #222;
+      padding: 15px;
+      text-align: center;
+      color: #f0e68c;
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      border-bottom: 1px solid #444;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background: #000;
+    }
+    .message {
+      max-width: 80%;
+      padding: 15px 20px;
+      border-radius: 15px;
+      font-size: 15px;
+      line-height: 1.5;
+      background: #111;
+      color: #fff;
+    }
+    .user-message {
+      background: #b8860b;
+      color: #000;
+      align-self: flex-end;
+    }
+    .bot-message {
+      align-self: flex-start;
+    }
+    .chat-input-container {
+      background: #111;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-top: 1px solid #444;
+      flex-wrap: wrap;
+    }
+    .chat-input {
+      flex: 1;
+      padding: 10px 15px;
+      border-radius: 25px;
+      border: 2px solid #b8860b;
+      background: #000;
+      color: #fff;
+      resize: none;
+      min-height: 40px;
+    }
+    .icon-button {
+      background: none;
+      border: none;
+      color: #b8860b;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .send-button {
+      background: #b8860b;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .send-button svg {
+      fill: #000;
+      width: 20px;
+      height: 20px;
+    }
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: #111;
+      padding: 10px 15px;
+      border-top: 1px solid #444;
+    }
+    .suggestions button {
+      background: #333;
+      color: #fff;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .suggestions button:hover {
+      background: #b8860b;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Chat History</h2>
+    <div class="chat-history" id="chatHistory"></div>
+  </div>
+  <div class="chat-wrapper">
+    <div class="header-title">TribalDance AI Companion</div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="bot-message">Hello! Ask me anything about Indian tribal dances or upload an image for analysis.</div>
+    </div>
+    <div class="suggestions">
+      <button onclick="suggest('Tell me about Ghoomar dance')">What is Ghoomar?</button>
+      <button onclick="suggest('Which tribal dance uses bamboo sticks?')">Bamboo stick dance?</button>
+      <button onclick="suggest('Show me an image of Santal dance')">Image of Santal dance</button>
+      <button onclick="suggest('Explain Bagurumba dance of Assam')">Bagurumba info</button>
+    </div>
+    <div class="chat-input-container">
+      <textarea class="chat-input" id="messageInput" placeholder="Type your message..."></textarea>
+      <input type="file" id="imageInput" accept="image/*" hidden />
+      <button class="icon-button" onclick="document.getElementById('imageInput').click()">🖼️</button>
+      <button class="icon-button" onclick="toggleVoiceInput()">🎤</button>
+      <button class="icon-button" onclick="toggleVoice(false)">🔇</button>
+      <button class="send-button" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+      </button>
+    </div>
+  </div>
+  <script>
+    const apiKey = 'AIzaSyBa153ql4tSpRrCxJTobd5gdui_-GJmwIk';
+    const chatMessages = document.getElementById('chatMessages');
+    const messageInput = document.getElementById('messageInput');
+    const chatHistory = document.getElementById('chatHistory');
+    let voiceEnabled = false;
+
+    function speak(text) {
+      if (!voiceEnabled) return;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+
+    function toggleVoice(state) {
+      voiceEnabled = state;
+      speechSynthesis.cancel();
+      // Stop speech recognition if active
+      if (recognition && isRecognizing) {
+        recognition.stop();
+        isRecognizing = false;
+        document.querySelector('.icon-button[onclick="toggleVoiceInput()"]').textContent = '🎤';
+      }
+    }
+
+    function addMessage(content, isUser = false) {
+      const div = document.createElement('div');
+      div.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+      div.textContent = content;
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      if (!isUser) speak(content);
+    }
+
+    function suggest(text) {
+      messageInput.value = text;
+      sendMessage();
+    }
+
+    async function sendMessage() {
+      const message = messageInput.value.trim();
+      const imageFile = document.getElementById('imageInput').files[0];
+
+      if (!message && !imageFile) return;
+      if (message) addMessage(message, true);
+      messageInput.value = '';
+
+      const parts = [];
+      if (message) parts.push({ text: message });
+
+      if (imageFile) {
+        const base64 = await toBase64(imageFile);
+        parts.push({
+          inline_data: {
+            mime_type: imageFile.type,
+            data: base64.split(',')[1]
+          }
+        });
+        const img = document.createElement('img');
+        img.src = base64;
+        img.style.maxWidth = '200px';
+        img.style.borderRadius = '10px';
+        img.style.marginTop = '10px';
+        chatMessages.appendChild(img);
+      }
+
+      try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents: [{ parts }] })
+        });
+        const data = await res.json();
+        const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I couldn\'t understand that.';
+        addMessage(reply);
+        if (message) saveToHistory(message);
+      } catch (e) {
+        addMessage('Error: ' + e.message);
+      }
+    }
+
+    function toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function saveToHistory(question) {
+      const historyItem = document.createElement('div');
+      historyItem.textContent = question;
+      historyItem.onclick = () => {
+        messageInput.value = question;
+        sendMessage();
+      };
+      chatHistory.appendChild(historyItem);
+    }
+
+    // Voice Input Functionality
+    const recognition = window.SpeechRecognition || window.webkitSpeechRecognition
+      ? new (window.SpeechRecognition || window.webkitSpeechRecognition)()
+      : null;
+
+    if (recognition) {
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      let isRecognizing = false;
+
+      function toggleVoiceInput() {
+        if (!recognition) {
+          addMessage('Speech recognition is not supported in this browser.');
+          return;
+        }
+
+        if (isRecognizing) {
+          recognition.stop();
+          isRecognizing = false;
+          document.querySelector('.icon-button[onclick="toggleVoiceInput()"]').textContent = '🎤';
+        } else {
+          recognition.start();
+          isRecognizing = true;
+          voiceEnabled = true; // Enable AI voice output when voice input is used
+          document.querySelector('.icon-button[onclick="toggleVoiceInput()"]').textContent = '⏹️';
+        }
+      }
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        messageInput.value = transcript;
+        isRecognizing = false;
+        document.querySelector('.icon-button[onclick="toggleVoiceInput()"]').textContent = '🎤';
+        sendMessage();
+      };
+
+      recognition.onerror = (event) => {
+        isRecognizing = false;
+        document.querySelector('.icon-button[onclick="toggleVoiceInput()"]').textContent = '🎤';
+        addMessage('Voice recognition error: ' + event.error);
+      };
+
+      recognition.onend = () => {
+        isRecognizing = false;
+        document.querySelector('.icon-button[onclick="toggleVoiceInput()"]').textContent = '🎤';
+      };
+    } else {
+      console.warn('SpeechRecognition API not supported in this browser.');
+    }
+  </script>
+</body>
+</html>

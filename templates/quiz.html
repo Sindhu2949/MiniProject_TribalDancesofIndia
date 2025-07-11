@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tribal Dance Quiz</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+    }
+    .quiz-container {
+      max-width: 800px;
+      margin: auto;
+      background: #111;
+      padding: 30px;
+      border-radius: 10px;
+    }
+    h2 {
+      color: #ff4081;
+    }
+    .question-block {
+      margin-bottom: 30px;
+    }
+    .options label {
+      display: block;
+      margin: 5px 0;
+    }
+    button {
+      padding: 10px 20px;
+      background: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Tribal Dance Quiz</h1>
+    <form action="{{ url_for('submit_quiz') }}" method="post">
+      {% for q in questions %}
+        <div class="question-block">
+          <h2>{{ loop.index }}. {{ q[0] }}</h2>
+          <div class="options">
+            {% set q_index = loop.index0 %}
+            {% for option in q[2] %}
+              <label>
+                <input type="radio" name="q{{ q_index }}" value="{{ option }}" required>
+                {{ option }}
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+      <button type="submit">Submit Quiz</button>
+    </form>
+  </div>
+</body>
+</html>

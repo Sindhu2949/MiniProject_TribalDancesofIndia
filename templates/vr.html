@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tribal Dance VR Gallery</title>
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+    }
+    .header {
+      position: absolute;
+      top: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 28px;
+      color: #ffdd57;
+      font-family: 'Papyrus', cursive;
+      font-weight: bold;
+      z-index: 10;
+      text-shadow: 2px 2px 8px #000;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">🌌 Tribal Dance Virtual Gallery 🌌</div>
+
+  <a-scene background="color: #000">
+  <a-assets>
+  <!-- Background -->
+  <img id="fallback" src="https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_1280.jpg">
+
+  <!-- Online Images -->
+  <img id="THEYYAM" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Puliyoor_Kali_Theyyam_at_Mathamangalam.jpg/1200px-Puliyoor_Kali_Theyyam_at_Mathamangalam.jpg">
+  <img id="LAVA" src="https://www.auchitya.com/wp-content/uploads/2020/10/lava-dance.jpg">
+  <img id="Dollu Kunitha" src="https://miro.medium.com/v2/resize:fit:650/1*5YmG4sA4kcJDaeydjbiMXg.jpeg">
+  <img id="Dumhal" src="https://cdn-images.prepp.in/public/image/d3a17d3662303143454b154f5f31470d.png?tr=w-468,h-301,c-force">
+  <img id="Fugdi" src="https://4.bp.blogspot.com/-LzR7P4GVoSw/WqP02ts_XFI/AAAAAAAAADA/IVEWvLUjzjoH8bY0csVfkKbjafBe3jNMQCLcBGAs/s1600/Kalshi%252BFugdi%252BDance%252BGoa.JPG">
+  <img id="Kawada" src="https://i.ytimg.com/vi/59MUfOp_d7o/hq720.jpg">
+  <img id="Raut Nacha" src="https://upload.wikimedia.org/wikipedia/commons/9/92/Raut_Nacha.jpg">
+  <img id="Bihu" src="https://i.ytimg.com/vi/PuXfJcTjqCA/maxresdefault.jpg">
+  <img id="DHEMSA" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/DHEMSA_DANCE.jpg/971px-DHEMSA_DANCE.jpg">
+  <img id="RASIYA" src="https://4.bp.blogspot.com/-LbkSimKBT6E/UC0VRp5AdRI/AAAAAAAACYo/_9gnUQMTbu0/s1600/DSC_7177.JPG">
+  <img id="BAUL" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSc8CSPACDm_GRZzTawNJ-TC1kU4Lv04n4qw&usqp=CAU">
+  <img id="BHAVAI" src="https://tse2.mm.bing.net/th?id=OIP._JHA3h_IdkLK1L5QhHzH5QHaE7&pid=Api&P=0&h=220">
+   
+  <!-- Local Images (.png) -->
+  <img id="AO NAGA" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfhTODL1FGu-Ox2op7fhrkCXfUb1TdLb-RSQ&s">
+  <img id="CHOLIYA" src="/static/images/CHOLIYA.png">
+  <img id="Ghoomar" src="/static/images/GHOOMAR.png">
+  <img id="JHUMAR" src="/static/images/JHUMAR.png">
+  <img id="Jhumair" src="/static/images/JHUMAIR.png">
+  <img id="Nicobari" src="/static/images/NICOBARI.png">
+  <img id="Tarpa" src="/static/images/TARPA.png">
+  <img id="LAMBADI" src="/static/images/LAMBADI.png">
+  <img id="KOLATTAM" src="/static/images/KOLATTAM.png">
+  <img id="Chamba" src="/static/images/CHAMBA.png">
+  <img id="MATKI" src="/static/images/MATKI.png">
+  <img id="NONGKREM" src="/static/images/NONGKREM.png">
+  <img id="TIPPANI" src="/static/images/TIPPANI.png">
+  <img id="PAVRI NACH" src="/static/images/PAVRINACH.png">
+  <img id="CHAAM" src="/static/images/CHAAM.png">
+  <img id="KUMMI" src="/static/images/KUMMI.png">
+</a-assets>
+
+
+    <a-sky color="#000"></a-sky>
+    <a-light type="ambient" color="#fff" intensity="1.2"></a-light>
+
+    <a-entity position="0 1.6 0">
+      <a-camera>
+        <a-cursor color="#FFD700" fuse="true" fuse-timeout="1000"></a-cursor>
+      </a-camera>
+    </a-entity>
+
+    <a-entity id="gallery"></a-entity>
+
+    <script>
+      const dances = [
+        "THEYYAM", "LAVA", "MATKI", "NONGKREM", "Ghoomar", "Tarpa", "Dollu Kunitha", "Dumhal",
+        "Chamba", "Fugdi", "Kawada", "Raut Nacha", "Jhumair", "Bihu", "Nicobari", "AO NAGA",
+        "DHEMSA", "JHUMAR", "CHAAM", "KUMMI", "CHOLIYA", "RASIYA", "BAUL",
+        "KOLATTAM", "LAMBADI","TIPPANI","PAVRI NACH","BHAVAI"  // ✅ Added AP & Telangana
+      ];
+
+      const radius = 18;
+      const container = document.getElementById("gallery");
+
+      dances.forEach((name, i) => {
+        const angle = (i / dances.length) * Math.PI * 2;
+        const x = radius * Math.cos(angle);
+        const z = radius * Math.sin(angle);
+
+        const wrapper = document.createElement("a-entity");
+        wrapper.setAttribute("position", `${x} 1.5 ${z}`);
+        wrapper.setAttribute("look-at", "[camera]");
+
+        const image = document.createElement("a-image");
+        image.setAttribute("src", `#${name}`);
+        image.setAttribute("width", "3");
+        image.setAttribute("height", "2");
+        image.setAttribute("link", `href: /dance_detail?name=${encodeURIComponent(name)}`);
+        wrapper.appendChild(image);
+
+        const label = document.createElement("a-text");
+        label.setAttribute("value", name);
+        label.setAttribute("align", "center");
+        label.setAttribute("color", "#FFD700");
+        label.setAttribute("width", "4");
+        label.setAttribute("position", `0 -1.3 0`);
+        wrapper.appendChild(label);
+
+        container.appendChild(wrapper);
+      });
+    </script>
+  </a-scene>
+</body>
+</html>

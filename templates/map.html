@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explore traditional Indian tribal dance forms across states on an interactive map. Discover cultural heritage, descriptions, and links to detailed dance pages." />
+  <meta name="keywords" content="Indian tribal dance, folk dance, cultural heritage, interactive map, Indian states" />
+  <title>Tribal Dance Map of India</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <style>
+    body { background-color: #000; color: #f0e68c; font-family: 'Segoe UI', sans-serif; }
+    .tribal-font { font-family: 'Papyrus', cursive; }
+    #map { height: 450px; width: 100%; border-radius: 12px; border: 2px solid #eab308; }
+    .dance-card { transition: transform 0.3s ease-in-out, box-shadow 0.3s; }
+    .dance-card:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(255, 255, 255, 0.3); }
+  </style>
+</head>
+<body class="text-yellow-100">
+<main class="max-w-6xl mx-auto p-4" aria-labelledby="map-title">
+  <h1 id="map-title" class="text-3xl text-center font-extrabold tribal-font text-yellow-400 mb-6 animate-pulse">
+    🕺 Tribal Dance Forms Across Indian States 💃
+  </h1>
+
+  <section class="py-4" aria-label="Interactive map of tribal dances">
+    <div id="map"></div>
+  </section>
+  <section id="danceInfo" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-live="polite"></section>
+  <footer class="text-center mt-12 text-sm text-yellow-300 italic">
+    © 2025 Tribal Heritage Portal · Powered by Open Culture
+  </footer>
+</main>
+
+<audio autoplay loop hidden>
+  <source src="https://cdn.pixabay.com/download/audio/2022/11/01/audio_7e967fec82.mp3?filename=tribal-african-drum-loop-127048.mp3" type="audio/mpeg">
+</audio>
+
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script>
+const map = L.map('map').setView([22.5, 80], 5);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+const tribalIcon = L.icon({
+  iconUrl: 'https://cdn-icons-png.flaticon.com/512/2848/2848601.png',
+  iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -30]
+});
+
+const danceForms = [
+  { name: "THEYYAM", state: "Kerala", lat: 10.85, lng: 76.27, description: "Divine ritualistic dance of northern Kerala with dramatic makeup." },
+  { name: "LAVA", state: "Lakshadweep", lat: 10.57, lng: 72.64, description: "Festive island dance performed by women during celebrations." },
+  { name: "MATKI", state: "Maharashtra", lat: 19.07, lng: 72.87, description: "Tribal pot-balancing dance symbolizing grace and celebration." },
+  { name: "NONGKREM", state: "Meghalaya", lat: 25.57, lng: 91.88, description: "Ceremonial Khasi harvest dance honoring deity Ka Blei Synshar." },
+  { name: "AO NAGA", state: "Nagaland", lat: 26.00, lng: 94.05, description: "Warrior folk dance from the Ao Naga tribe." },
+  { name: "DHEMSA", state: "Odisha", lat: 20.95, lng: 85.09, description: "Circular tribal dance celebrating unity and nature." },
+  { name: "JHUMAR", state: "Punjab", lat: 31.14, lng: 75.57, description: "Graceful Punjabi folk dance celebrating harvest and community." },
+  { name: "CHAAM", state: "Sikkim", lat: 27.33, lng: 88.61, description: "Masked Buddhist monastery dance representing spiritual themes." },
+  { name: "KUMMI", state: "Tamil Nadu", lat: 11.12, lng: 78.65, description: "Rhythmic folk dance with clapping, performed by women." },
+  { name: "CHOLIYA", state: "Uttarakhand", lat: 30.07, lng: 79.10, description: "Kumaoni warrior-style sword dance warding off evil." },
+  { name: "RASIYA", state: "Uttar Pradesh", lat: 27.57, lng: 80.66, description: "Devotional dance celebrating Radha-Krishna's love." },
+  { name: "BAUL", state: "West Bengal", lat: 22.57, lng: 88.36, description: "Spiritual dance of mystical Baul singers." },
+  { name: "Dollu Kunitha", state: "Karnataka", lat: 12.97, lng: 77.59, description: "Vigorous drum dance by the Kuruba community." },
+  { name: "Dumhal", state: "Jammu and Kashmir", lat: 34.08, lng: 74.79, description: "Ceremonial dance of the Wattal tribe." },
+  { name: "Chamba", state: "Himachal Pradesh", lat: 32.11, lng: 76.12, description: "Graceful folk dance with synchronized storytelling." },
+  { name: "Ghoomar", state: "Haryana", lat: 28.45, lng: 77.31, description: "Colorful folk dance with rhythmic swirling steps." },
+  { name: "Fugdi", state: "Goa", lat: 15.29, lng: 74.12, description: "Energetic women’s folk dance with rhythmic clapping." },
+  { name: "Tarpa", state: "Daman and Diu", lat: 20.42, lng: 72.83, description: "Warli tribal dance with bamboo trumpet rhythms." },
+  { name: "Kawada", state: "Dadra and Nagar Haveli", lat: 20.18, lng: 73.01, description: "Kokna tribal dance celebrating nature and agriculture." },
+  { name: "Raut Nacha", state: "Chhattisgarh", lat: 21.27, lng: 81.63, description: "Vibrant dance honoring Lord Krishna’s life." },
+  { name: "Jhumair", state: "Bihar", lat: 25.09, lng: 85.31, description: "Tribal dance by the Munda tribe during festivals." },
+  { name: "Bihu", state: "Assam", lat: 26.14, lng: 91.77, description: "Vibrant folk dance celebrating the Assamese New Year." },
+  { name: "Nicobari", state: "Andaman and Nicobar Islands", lat: 11.74, lng: 92.65, description: "Traditional dance of the Nicobari people." },
+
+  // ✅ NEW ENTRIES BELOW
+  { name: "LAMBADI", state: "Telangana", lat: 17.385, lng: 78.4867, description: "Nomadic Banjara tribe’s vibrant dance with mirrored costumes and dholak beats." },
+  { name: "TIPPANI", state: "Gujarat", lat: 22.3, lng: 70.79, description: "A synchronized stick dance performed by women during festive occasions in Gujarat." },
+  {name: "PAVRI NACH",state: "Maharashtra",lat: 19.7515,lng: 75.7139,description: "A tribal dance of the Kolam tribe, marked by rhythmic footwork and celebratory energy."},
+  {name: "BHAVAI",state: "Rajasthan",lat: 26.9, lng: 75.8,description: "A Rajasthani folk dance performed by women balancing pots on their heads with extreme skill."},
+  { name: "KOLATTAM", state: "Andhra Pradesh", lat: 15.9129, lng: 79.74, description: "Traditional stick dance by village women, full of rhythm and legends." }
+];
+
+danceForms.forEach(d => {
+  L.marker([d.lat, d.lng], { icon: tribalIcon })
+    .addTo(map)
+    .bindPopup(`<b>${d.name}</b><br>${d.state}`)
+    .on('click', () => {
+      map.flyTo([d.lat, d.lng], 6.5);
+      showCard(d);
+    });
+});
+
+function showCard(d) {
+  const url = `/dance_detail?name=${encodeURIComponent(d.name)}`;
+  document.getElementById('danceInfo').innerHTML = `
+    <div class="dance-card bg-black bg-opacity-50 p-6 rounded-2xl border border-yellow-500 text-yellow-200 hover:shadow-lg hover:border-pink-500">
+      <h3 class="text-2xl font-bold text-pink-400 tribal-font mb-2">
+        <a href="${url}" class="hover:underline hover:text-yellow-300" aria-label="View details for ${d.name} dance">${d.name}</a>
+      </h3>
+      <p class="text-yellow-100 mb-1">${d.description}</p>
+      <p class="text-sm"><strong>State:</strong> ${d.state}</p>
+    </div>`;
+}
+</script>
+</body>
+</html>

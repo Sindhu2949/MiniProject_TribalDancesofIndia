@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block title %}Search Tribal Dances{% endblock %}
+
+{% block content %}
+<h1 style="text-align:center;">🔍 Explore Tribal Dances of India</h1>
+
+<!-- Poetic line with shimmer effect -->
+<p style="text-align:center; font-size: 1.3rem; margin-top: 10px; color: #fefae0; font-weight: 600; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-shadow: 1px 1px 2px #000;">
+  🌿 <em>“From the heart of the forests to the spirit of the festivals – discover the rhythm of India’s tribal soul.”</em> 🌿
+</p>
+
+<!-- Vibrant banner -->
+<div style="text-align:center; background: linear-gradient(to right, #f4a261, #e76f51); padding: 10px 20px; border-radius: 10px; margin: 15px auto; width: fit-content; color: white; font-weight: bold;">
+  🎶 Dive into the Dance Stories of India's Tribal Heritage 🎶
+</div>
+
+<!-- Search Form -->
+<form method="get" action="/search" class="search-box" style="text-align:center; margin: 20px auto;">
+  <input type="text" name="q" id="searchInput" placeholder="Search dance name..." value="{{ query or '' }}" autocomplete="off">
+
+  <select name="region">
+    <option value="">All Regions</option>
+    {% for r in all_regions %}
+    <option value="{{ r }}" {% if r == selected_region %}selected{% endif %}>{{ r }}</option>
+    {% endfor %}
+  </select>
+
+  <select name="festival">
+    <option value="">All Festivals</option>
+    {% for f in all_festivals %}
+    <option value="{{ f }}" {% if f == selected_festival %}selected{% endif %}>{{ f }}</option>
+    {% endfor %}
+  </select>
+
+  <select name="significance">
+    <option value="">All Significance</option>
+    {% for s in all_significance %}
+    <option value="{{ s }}" {% if s == selected_significance %}selected{% endif %}>{{ s }}</option>
+    {% endfor %}
+  </select>
+
+  <button type="submit" style="padding: 6px 14px; border: none; background-color: #2a9d8f; color: white; border-radius: 5px;">Search</button>
+</form>
+
+<!-- Auto Suggestions -->
+<ul id="suggestionList" style="list-style:none;text-align:center;padding:0;"></ul>
+
+<!-- Display Results -->
+{% if results %}
+  <h2 style="margin-top:30px; text-align:center; color: white;">Showing {{ results|length }} result(s){% if query %} for "{{ query }}"{% endif %}</h2>
+
+  {% for name, info in results.items() %}
+    <div class="dance-card" style="border: 2px solid #e76f51; border-radius: 10px; padding: 15px; margin: 20px auto; max-width: 650px; background-color: #fff7f0; color: #222; box-shadow: 2px 2px 10px rgba(0,0,0,0.2);">
+      <h2 style="color: #264653;">{{ name }} <small style="color: #666;">({{ info.region }})</small></h2>
+      <p><strong style="color:#000;">Description:</strong> {{ info.description }}</p>
+      <p><strong style="color:#000;">Performed During:</strong> {{ info.when }}</p>
+
+      {% if info.significance_dance %}
+        <p><strong style="color:#000;">Significance of Dance:</strong> {{ info.significance_dance }}</p>
+      {% endif %}
+      {% if info.significance_costume %}
+        <p><strong style="color:#000;">Significance of Costume:</strong> {{ info.significance_costume }}</p>
+      {% endif %}
+
+      <p><strong style="color:#000;">Festival:</strong> {{ info.festival | join(', ') }}</p>
+
+      {% if info.tags %}
+        <p><strong style="color:#000;">Tags:</strong>
+          {% for t in info.tags %}
+            <span style="background:#f4a261; padding:3px 6px; margin:2px; border-radius:4px; color:#000;">{{ t }}</span>
+          {% endfor %}
+        </p>
+      {% endif %}
+
+      {% if info.image %}
+        <img src="{{ info.image }}" alt="{{ name }}" width="100%" style="max-width: 600px; border-radius:8px; margin-top:10px;">
+      {% endif %}
+    </div>
+  {% endfor %}
+{% elif query %}
+  <p style="margin-top: 30px; color: #ff4d4d; text-align:center;">No dances found matching "{{ query }}"</p>
+{% endif %}
+
+<!-- Home Button -->
+<div style="text-align:center; margin-top:40px;">
+  <a href="/" style="text-decoration:none; background-color:#2a9d8f; color:white; padding:10px 20px; border-radius:8px; font-weight:bold;">
+    ⬅️ Go to Home
+  </a>
+</div>
+
+<!-- JavaScript: Autocomplete -->
+<script>
+  const dances = {{ all_names | tojson }};
+  const input = document.getElementById("searchInput");
+  const suggestionList = document.getElementById("suggestionList");
+
+  input.addEventListener("input", function () {
+    const query = this.value.toLowerCase();
+    suggestionList.innerHTML = '';
+    if (query.length > 0) {
+      const matches = dances.filter(name => name.toLowerCase().includes(query)).slice(0, 5);
+      matches.forEach(m => {
+        const li = document.createElement("li");
+        li.textContent = m;
+        li.style.cursor = "pointer";
+        li.style.padding = "4px";
+        li.style.backgroundColor = "#f4f4f4";
+        li.style.margin = "2px auto";
+        li.style.width = "200px";
+        li.style.borderRadius = "4px";
+        li.onclick = () => {
+          input.value = m;
+          suggestionList.innerHTML = '';
+        };
+        suggestionList.appendChild(li);
+      });
+    }
+  });
+</script>
+
+<!-- Shimmer animation -->
+<style>
+@keyframes shimmer {
+  0% {opacity: 0.3;}
+  50% {opacity: 1;}
+  100% {opacity: 0.3;}
+}
+p em {
+  animation: shimmer 3s ease-in-out infinite;
+}
+body {
+  background-color: black;
+}
+</style>
+
+{% endblock %}

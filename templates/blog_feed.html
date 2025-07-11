@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block title %}Tribal Blog Feed{% endblock %}
+
+{% block content %}
+<style>
+  .blog-card {
+    background: #fff8f0;
+    border-left: 6px solid #c94c4c;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    position: relative;
+    animation: fadeIn 0.8s ease-in-out;
+  }
+
+  .tribal-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    align-items: center;
+  }
+
+  .tribal-icons i {
+    cursor: pointer;
+    font-size: 20px;
+    transition: transform 0.2s;
+  }
+
+  .tribal-icons i:hover {
+    transform: scale(1.2);
+  }
+
+  .like-count {
+    font-weight: bold;
+    color: #c94c4c;
+  }
+
+  .comment-box {
+    margin-top: 15px;
+  }
+
+  .comment-box textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px dashed #c94c4c;
+    border-radius: 10px;
+  }
+
+  .comment-box button {
+    background-color: #c94c4c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    margin-top: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .share-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .share-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fefefe;
+    min-width: 140px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 10px;
+  }
+
+  .share-dropdown:hover .share-dropdown-content {
+    display: block;
+  }
+
+  .share-dropdown-content a {
+    color: black;
+    padding: 10px 12px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .share-dropdown-content a:hover {
+    background-color: #f2f2f2;
+  }
+</style>
+
+{% for post in posts %}
+<div class="blog-card" data-id="{{ post.id }}">
+  <h2>{{ post.title }}</h2>
+  <p>{{ post.content }}</p>
+
+  <div class="tribal-icons">
+    <i class="fa fa-heart" onclick="likePost({{ post.id }}, this)"></i>
+    <span class="like-count" id="likeCount{{ post.id }}">{{ post.likes }}</span>
+
+    <div class="share-dropdown">
+      <i class="fa fa-share-alt"></i>
+      <div class="share-dropdown-content">
+        <a href="https://wa.me/?text=Check+out+{{ post.title }}" target="_blank">WhatsApp</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://example.com" target="_blank">Facebook</a>
+        <a href="https://twitter.com/intent/tweet?text=Explore+{{ post.title }}" target="_blank">X</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="comment-box">
+    <textarea placeholder="Write your tribal thought..."></textarea>
+    <button onclick="postComment({{ post.id }}, this)">Post Comment</button>
+    <div class="comments" id="comments{{ post.id }}"></div>
+  </div>
+</div>
+{% endfor %}
+
+<script>
+function likePost(postId, icon) {
+  fetch(`/like/${postId}`, { method: "POST" })
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById(`likeCount${postId}`).innerText = data.likes;
+      icon.style.color = "#c94c4c";
+    });
+}
+
+function postComment(postId, button) {
+  const textarea = button.previousElementSibling;
+  const text = textarea.value.trim();
+  if (!text) return;
+
+  fetch(`/comment/${postId}`, {
+    method: "POST",
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ text: text })
+  }).then(res => res.json()).then(() => {
+    const commentDiv = document.getElementById(`comments${postId}`);
+    const p = document.createElement("p");
+    p.textContent = "🗣️ " + text;
+    commentDiv.appendChild(p);
+    textarea.value = "";
+  });
+}
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+{% endblock %}

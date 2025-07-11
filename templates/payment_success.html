@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Payment Success</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-black text-white text-center p-10">
+  <h1 class="text-4xl font-bold text-green-400 mb-4">✅ Payment Successful!</h1>
+  <p class="text-xl text-yellow-400 mb-4">
+    Thank you <span class="font-semibold">{{ name }}</span> for completing your order via <strong>{{ method }}</strong>.
+  </p>
+
+  {% if show_qr %}
+    <div class="flex justify-center mb-6">
+      <img src="{{ url_for('static', filename='images/qr.png') }}" alt="Scan QR" class="w-64 h-64 rounded-lg shadow-xl" />
+    </div>
+    <p class="text-lg text-white mb-4">Please scan the above QR code to complete the payment.</p>
+  {% endif %}
+
+  <a href="{{ url_for('home') }}" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+    Return to Home
+  </a>
+</body>
+</html>

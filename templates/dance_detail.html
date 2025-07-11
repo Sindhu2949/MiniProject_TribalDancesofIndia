@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Learn about traditional Indian folk dances, including descriptions, images, videos, workshops, and trainers.">
+  <meta name="keywords" content="Indian folk dance, traditional dance, dance workshops, cultural heritage">
+  <title>Dance Detail</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .section {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="max-w-4xl mx-auto p-6">
+    <h1 id="danceTitle" class="text-4xl font-bold mb-6 text-center text-yellow-300"></h1>
+    <div id="detailsContainer"></div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const danceName = params.get("name");
+
+    const danceData = {
+      "THEYYAM": {
+        description: "Theyyam is a ritualistic performance art from Kerala involving dramatic makeup, elaborate costumes, and spiritual storytelling rooted in mythology.",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Puliyoor_Kali_Theyyam_at_Mathamangalam.jpg/1200px-Puliyoor_Kali_Theyyam_at_Mathamangalam.jpg",
+        video: "https://www.youtube.com/embed/FNSQmHrmUhw",
+        workshops: ["July 15 – Theyyam Makeup & Rituals", "Aug 10 – Temple Storytelling"],
+        trainers: ["Guru Nandan (+91-9090909090)", "Email: theyyam.nandan@keralaculture.org"]
+      },
+      "LAVA": {
+        description: "Lava Dance is a traditional folk dance from Lakshadweep, performed during weddings and festivals with graceful hand gestures and rhythmic steps.",
+        image: "https://www.auchitya.com/wp-content/uploads/2020/10/lava-dance.jpg",
+        video: "https://www.youtube.com/embed/eUWVAF4OjkM",
+        workshops: ["Aug 1 – Lava Dance Rhythm", "Sept 3 – Lakshadweep Festive Moves"],
+        trainers: ["Guru Kareem (+91-9876543211)", "Email: lava.kareem@lakshaculture.in"]
+      },
+      "MATKI": {
+        description: "Matki Dance is a festive dance performed by women in Maharashtra balancing earthen pots, symbolizing celebration and grace.",
+        image: "https://www.travelviewpoint.com/wp-content/uploads/2023/07/The-Matki-Dance.jpg",
+        video: "https://www.youtube.com/embed/wuXZiQaP1-o",
+        workshops: ["July 12 – Matki Balancing Art", "Aug 18 – Traditional Tunes"],
+        trainers: ["Guru Aarti (+91-9876543001)", "Email: matki.aarti@mahadance.org"]
+      },
+      "NONGKREM": {
+        description: "Nongkrem is a ceremonial Khasi dance from Meghalaya performed by unmarried girls during the Nongkrem Festival to honor the deity Ka Blei Synshar.",
+        image: "https://www.india-tours.com/images/festivals/nongkrem-dance-festival/nongkrem-dance2.jpg",
+        video: "https://www.youtube.com/embed/aNQt-BMOU-A",
+        workshops: ["Oct 1 – Khasi Ritual Dance", "Oct 20 – Festival Practice"],
+        trainers: ["Guru Rinchi (+91-9087654321)", "Email: nongkrem.rinchi@meghalaya.org"]
+      },
+      "Dollu Kunitha": {
+        description: "Dollu Kunitha is a vigorous folk dance from Karnataka, performed by the Kuruba community using synchronized drumming and chanting.",
+        image: "https://miro.medium.com/v2/resize:fit:650/1*5YmG4sA4kcJDaeydjbiMXg.jpeg",
+        video: "https://www.youtube.com/embed/vt3DUuCQVSs?start=41",
+        workshops: ["Sept 20 – Drum Synchronization Techniques", "Oct 12 – Chant & Step Formation Workshop"],
+        trainers: ["Guru Shivappa Kuruba (+91-9876543210)", "Email: dollu.shivappa@folkarts.kar"]
+      },
+      "Dumhal": {
+        description: "Dumhal is a traditional ceremonial dance of the Wattal tribe in the Kashmir region of Jammu and Kashmir.",
+        image: "https://cdn-images.prepp.in/public/image/d3a17d3662303143454b154f5f31470d.png?tr=w-468,h-301,c-force",
+        video: "https://www.youtube.com/embed/Ks_6J3bIJZI",
+        workshops: ["Aug 14 – Kashmiri Banner Rituals", "Sept 5 – Traditional Dumhal Movement & Music"],
+        trainers: ["Guru Wali Mohammad (+91-9988776611)", "Email: dumhal.wali@kashmirfolk.org"]
+      },
+      "Chamba": {
+        description: "Chamba Dance is a graceful folk dance from Himachal Pradesh with synchronized group movements and storytelling.",
+        image: "https://i.pinimg.com/736x/dd/e6/64/dde6641077be8dc9813d55aa127f1a68.jpg",
+        video: "https://www.youtube.com/embed/M1VL5MK90XM",
+        workshops: ["Oct 10 – Chamba Circle Steps", "Nov 8 – Folklore Storytelling through Dance"],
+        trainers: ["Guru Sushma Rana (+91-9876543211)", "Email: chamba.sushma@himalayandance.org"]
+      },
+      "Ghoomar": {
+        description: "Ghoomar is a graceful folk dance from Haryana, featuring colorful costumes and rhythmic swirling steps.",
+        image: "https://letsgrowmore.in/wp-content/uploads/2021/05/p3-1.jpg",
+        video: "https://www.youtube.com/embed/c9Kh_5KAvB8",
+        workshops: ["Oct 12 – Haryanvi Ghoomar Steps", "Nov 3 – Skirt Spin & Synchronization"],
+        trainers: ["Guru Meena Devi (+91-9912345678)", "Email: ghoomar.meena@haryanaculture.in"]
+      },
+      "Fugdi": {
+        description: "Fugdi is a traditional folk dance from Goa, performed predominantly by women with rhythmic clapping and energetic steps.",
+        image: "https://4.bp.blogspot.com/-LzR7P4GVoSw/WqP02ts_XFI/AAAAAAAAADA/IVEWvLUjzjoH8bY0csVfkKbjafBe3jNMQCLcBGAs/s1600/Kalshi%252BFugdi%252BDance%252BGoa.JPG",
+        video: "https://www.youtube.com/embed/do9qiIFb70c",
+        workshops: ["Aug 28 – Circular Form & Rhythms", "Sept 10 – Folk Songs of Fugdi"],
+        trainers: ["Guru Swizel Pereira (+91-9978561230)", "Email: fugdi.swizel@goaculture.org"]
+      },
+      "Kawada": {
+        description: "Kawada Dance of the Kokna tribe from Dadra and Nagar Haveli celebrates nature, agriculture, and tribal heritage.",
+        image: "https://i.ytimg.com/vi/59MUfOp_d7o/hq720.jpg",
+        video: "https://www.youtube.com/embed/UUqKGdKbWHk",
+        workshops: ["Sept 12 – Tribal Footwork & Formation", "Oct 4 – Folk Stick Dance Workshop"],
+        trainers: ["Guru Kavita Kokna (+91-9807654321)", "Email: kawada.kavita@tribalarts.dnh"]
+      },
+      "Raut Nacha": {
+        description: "Raut Nacha is a vibrant folk dance from Chhattisgarh, honoring Lord Krishna and depicting themes from his life.",
+        image: "https://upload.wikimedia.org/wikipedia/commons/9/92/Raut_Nacha.jpg",
+        video: "https://www.youtube.com/embed/kuErwk181II",
+        workshops: ["Nov 5 – Devotional Movement Workshop", "Dec 10 – Traditional Krishna Folk Style"],
+        trainers: ["Guru Rajveer (+91-9876543219)", "Email: rautnacha.rajveer@chhattisgarhfolk.org"]
+      },
+      "Jhumair": {
+        description: "Jhumair is a vibrant tribal dance from Bihar, performed by the Munda tribe during festivals and community gatherings.",
+        image: "https://www.gosahin.com/go/p/j/1576435575_jhumair-dance.jpg",
+        video: "https://www.youtube.com/embed/dtJs1FfsUqM",
+        workshops: ["July 25 – Tribal Drum Rhythms", "Aug 10 – Jhumair Celebration Workshop"],
+        trainers: ["Guru Arvind (+91-9877891234)", "Email: jhumair.arvind@bihartribes.org"]
+      },
+      "Bihu": {
+        description: "Bihu dance is a vibrant folk dance from Assam, performed during the Bihu festival to celebrate the Assamese New Year.",
+        image: "https://i.ytimg.com/vi/PuXfJcTjqCA/maxresdefault.jpg",
+        video: "https://www.youtube.com/embed/uxKXskV5McQ",
+        workshops: ["April 14 – Spring Bihu Workshop", "May 2 – Assamese Costume & Drums"],
+        trainers: ["Guru Nayan Jyoti (+91-9876504321)", "Email: guru.nayan@bihudance.org"]
+      },
+      "Nicobari": {
+        description: "Nicobari dance is a traditional form performed by the Nicobari people of the Nicobar Islands.",
+        image: "https://i.pinimg.com/originals/d7/10/1f/d7101f4d14cbe4965adccc04bc2a6364.jpg",
+        video: "https://www.youtube.com/embed/M9whLct0Oag",
+        workshops: ["July 18 – Island Beat Techniques", "Aug 10 – Nicobari Costume Choreography"],
+        trainers: ["Guru Antony (+91-9812345670)", "Email: nicobar.antony@andaman.org"]
+      },
+      "AO NAGA": {
+        description: "Ao Naga Dance is a traditional celebration by the Ao tribe of Nagaland featuring synchronized movements and symbolic storytelling through music.",
+        image: "https://i.pinimg.com/originals/94/37/75/943775ab23c73868011a433ad0b3555b.jpg",
+        video: "https://www.youtube.com/embed/X7Nv8Uq1Lbw",
+        workshops: ["Aug 21 – Tribal Steps & Stories", "Sept 16 – Bamboo Flute Mastery"],
+        trainers: ["Guru Temjen (+91-9811234567)", "Email: aonaga.temjen@nagaculture.org"]
+      },
+      "DHEMSA": {
+        description: "Dhemsa is a traditional tribal dance from Odisha, performed in a circular formation representing unity and harmony with nature.",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/DHEMSA_DANCE.jpg/971px-DHEMSA_DANCE.jpg",
+        video: "https://www.youtube.com/embed/2RgWV2oZ_kE",
+        workshops: ["July 8 – Circle Rhythm", "Aug 15 – Gadaba Steps"],
+        trainers: ["Guru Surya (+91-9823456710)", "Email: dhemsa.surya@oridance.org"]
+      },
+      "JHUMAR": {
+        description: "Jhumar is a traditional dance from Punjab involving slow rhythmic moves and is performed mostly by men to celebrate harvest and community bonding.",
+        image: "https://www.indianetzone.com/photos_gallery/89/Jhummar_Dance__Folk_Dance_of_Punjab_1.jpg",
+        video: "https://www.youtube.com/embed/s1gk9OVY1oU",
+        workshops: ["Aug 2 – Jhumar Basics", "Sept 14 – Bhangra vs Jhumar"],
+        trainers: ["Guru Harmeet (+91-9998887770)", "Email: jhumar.harmeet@punjabdance.org"]
+      },
+      "CHAAM": {
+        description: "Chaam is a masked ritual dance from Sikkim and Tibetan Buddhism representing deities, demons, and spiritual teachings in monastic festivals.",
+        image: "https://images.indianexpress.com/2023/05/cham2.jpg?resize=600,454",
+        video: "https://www.youtube.com/embed/j6LNYuxAp2s",
+        workshops: ["Nov 11 – Mask Crafting", "Dec 1 – Cham Symbolism"],
+        trainers: ["Guru Tashi (+91-8887654321)", "Email: chaam.tashi@sikkimheritage.org"]
+      },
+      "KUMMI": {
+        description: "Kummi is a simple rhythmic folk dance from Tamil Nadu and Tripura, performed mostly by women in circular formations while clapping and singing.",
+        image: "https://miro.medium.com/v2/resize:fit:1024/1*tRBR-Rk1TII_sFXgAzUB5w.jpeg",
+        video: "https://www.youtube.com/embed/5WtAYXgGxXY",
+        workshops: ["Sept 10 – Hand-Clap Patterns", "Oct 5 – Kummi Songs"],
+        trainers: ["Guru Devi (+91-9876567890)", "Email: kummi.devi@folkroots.org"]
+      },
+      "CHOLIYA": {
+        description: "Choliya is a warrior dance from Uttarakhand, performed with swords and shields to ward off evil and celebrate martial traditions.",
+        image: "https://www.lifestylefun.net/wp-content/uploads/2022/06/folk-dance-of-uttarakhand.png",
+        video: "https://www.youtube.com/embed/mF2eZIFFRZc",
+        workshops: ["July 20 – Sword Movements", "Aug 22 – Choliya Music"],
+        trainers: ["Guru Bhatt (+91-7776655443)", "Email: choliya.bhatt@uttarakhand.org"]
+      },
+      "RASIYA": {
+        description: "Rasiya is a folk dance from Uttar Pradesh celebrating the love of Radha and Krishna, with lyrical storytelling and festive colors.",
+        image: "https://4.bp.blogspot.com/-LbkSimKBT6E/UC0VRp5AdRI/AAAAAAAACYo/_9gnUQMTbu0/s1600/DSC_7177.JPG",
+        video: "https://www.youtube.com/embed/6-hYt-lnZNs",
+        workshops: ["Aug 15 – Radha-Krishna Narrative", "Sept 5 – Holi Folk Beats"],
+        trainers: ["Guru Neelesh (+91-9900112233)", "Email: rasiya.neelesh@brajdance.org"]
+      },
+      "BAUL": {
+        description: "Baul dance is a spiritual folk expression from West Bengal performed by Baul singers combining music, mysticism, and devotion.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSc8CSPACDm_GRZzTawNJ-TC1kU4Lv04n4qw&usqp=CAU",
+        video: "https://www.youtube.com/embed/-cK0IQoIwQ8?si=Uy-fvJUzbyzpd7jh",
+        workshops: ["Oct 3 – Baul Ektara Workshop", "Nov 8 – Folk Poetry Jam"],
+        trainers: ["Guru Parvathy (+91-9870002222)", "Email: baul.parvathy@bengalfolk.org"]
+      },
+      "Tarpa": {
+        description: "Tarpa Dance is a traditional folk dance of the Warli tribe in Daman and Diu. Named after the bamboo trumpet 'Tarpa', this dance includes vibrant group formations and rhythmic footwork. It symbolizes the deep bond with nature, storytelling, and agricultural life. Performed during harvests and festivals, it preserves tribal values and artistic expression.",
+        image: "https://img.indiaonline.in///tarpa_festival/Tarpa-Festival1.jpg",
+        video: "https://www.youtube.com/embed/Lo3Ug0xi9aY",
+        workshops: [
+          "Aug 20 – Tarpa Instrument Demo & Dance",
+          "Sept 14 – Harvest Rhythm Choreography"
+        ],
+        trainers: [
+          "Guru Nalesh Warli (+91-9876549870)",
+          "Email: tarpa.nalesh@tribaldaman.org"
+        ]
+      },
+"LAMBADI": {
+  description: "Banjara (Lambadi) dance is a vibrant folk dance performed by the Banjara community of Telangana. It features rhythmic footwork, graceful movements, and colorful attire adorned with mirrors and embroidery. The dance celebrates nomadic heritage and is performed during weddings, festivals, and joyful gatherings.",
+  image: "https://tse4.mm.bing.net/th?id=OIP.c4Go5r_eqazmdLqK811BaAHaGL&pid=Api&P=0&h=220",
+  video: "https://www.youtube.com/embed/3BPgG2kaSRI?si=RoCC0YoU_qMyvdy9",
+  workshops: ["Aug 8 – Banjara Costume & Expression", "Sept 18 – Tribal Footwork & Dholak Rhythm"],
+  trainers: ["Guru Kavitha Devi (+91-9876544321)", "Email: lambadi.kavitha@telanganafolk.org"]
+},
+"KOLATTAM": {
+  description: "Known as the ‘Stick Dance’, Kolattam is a traditional folk dance from Andhra Pradesh performed during village festivals and celebrations. Legend says the dance pacified the demon Basavasura with its beauty and grace. Dancers wear bright skirts and jewelry, forming patterns with synchronized stick movements in vibrant harmony.",
+  image: "https://www.caleidoscope.in/wp-content/uploads/2021/05/Folk-Dances-of-Andhra-Pradesh-Kolattam-01.jpg",
+  video: "https://www.youtube.com/embed/0NYpbbNBcHg",
+  workshops: ["Aug 10 – Stick Movement Synchronization", "Sept 5 – Kolattam Rhythm & Costume Workshop"],
+  trainers: ["Guru Ramadevi (+91-9845678901)", "Email: kolattam.ramadevi@apfolk.org"]
+},
+"TIPPANI": {
+  description: "Tippani is a traditional tribal dance originating from the Rathwa community of Gujarat, India. It features energetic movements, intricate footwork, and rhythmic drumming. Dancers often form circular or line formations, performing synchronized steps to the beat of traditional music. Tippani dance is performed during festivals, weddings, and other celebrations within the Rathwa community, preserving their cultural heritage and identity.",
+  image: "https://i.pinimg.com/736x/5b/82/0e/5b820e0cb8d428c348efd07e89be4cf7.jpg",
+  video: "https://www.youtube.com/embed/kj7t6TkJb0E?si=Z4CYJ-gpOFqpcnM9",
+  workshops: [
+    "July 30 – Gujarat Rhythm & Footwork",
+    "Aug 25 – Folk Expressions of Rathwa Community"
+  ],
+  trainers: [
+    "Guru Ramesh Rathwa (+91-9123456780)",
+    "Email: tippani.ramesh@gujaratifolk.org"
+  ]
+},
+"PAVRI NACH": {
+  "description": "Pavri Nach is a vibrant tribal dance performed by the Kolam tribe of Maharashtra, India. It showcases rhythmic footwork, expressive hand movements, and colorful traditional attire. Often performed during festivals and community gatherings, this dance form is a celebration of unity, joy, and cultural heritage. It is accompanied by instruments like dholki and daf, creating a festive and spiritual atmosphere.",
+  "image": "https://htoindia.com/wp-content/uploads/2018/01/parvi-nach-maharashtra_sjnsfv.jpg",
+  "video": "https://www.youtube.com/embed/HiE9tjLia2k?si=tTbqZNq6KIzjJSKO",
+  "workshops": [
+    "August 10 – Tribal Beats & Pavri Rhythms",
+    "September 2 – Kolam Dance Techniques"
+  ],
+  "trainers": [
+    "Guru Meera Kolam (+91-9876543210)",
+    "Email: pavri.meera@maharashtrafolk.org"
+  ]
+},
+"BHAVAI": {
+        description: "Bhavai is a folk dance of Rajasthan performed by women balancing pots. It requires extreme skill and balance.",
+        image: "https://tse2.mm.bing.net/th?id=OIP._JHA3h_IdkLK1L5QhHzH5QHaE7&pid=Api&P=0&h=220",
+        video: "https://www.youtube.com/embed/Rlj6dAZBL7U",
+        workshops: ["July 15 – Balance Techniques in Bhavai", "Aug 20 – Bhil & Kalbelia Fusion Styles"],
+        trainers: ["Guru Radha Kalbelia (+91-7778889990)", "Email: bhavai.radha@rajasthanfolk.org"]
+      }
+};
+
+    function renderDanceDetails(name) {
+      const title = document.getElementById("danceTitle");
+      const container = document.getElementById("detailsContainer");
+
+      // Display loading state
+      container.innerHTML = "<p>Loading dance details...</p>";
+
+      setTimeout(() => {
+        if (!name) {
+          title.innerText = "No dance name provided.";
+          container.innerHTML = "";
+          return;
+        }
+
+        const data = danceData[name];
+        if (!data) {
+          title.innerText = "Dance not found.";
+          container.innerHTML = "";
+          return;
+        }
+
+        title.innerText = name + " Dance";
+
+        container.innerHTML = `
+          <section class="section" aria-labelledby="description-heading">
+            <h2 id="description-heading" class="text-2xl font-semibold text-yellow-200">Description</h2>
+            <p class="mt-2">${data.description}</p>
+          </section>
+          <section class="section" aria-labelledby="image-heading">
+            <h2 id="image-heading" class="text-2xl font-semibold text-yellow-200">Image</h2>
+            <img src="${data.image}" alt="${name} dance" class="rounded-lg w-full shadow-lg mt-2">
+          </section>
+          <section class="section" aria-labelledby="video-heading">
+            <h2 id="video-heading" class="text-2xl font-semibold text-yellow-200">Video</h2>
+            <div class="video-container mt-2">
+              <iframe src="${data.video}" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </section>
+          <section class="section" aria-labelledby="workshops-heading">
+            <h2 id="workshops-heading" class="text-2xl font-semibold text-yellow-200">Workshops</h2>
+            <ul class="list-disc ml-6 mt-2">
+              ${data.workshops.map(w => `<li>${w}</li>`).join("")}
+            </ul>
+          </section>
+          <section class="section" aria-labelledby="trainers-heading">
+            <h2 id="trainers-heading" class="text-2xl font-semibold text-yellow-200">Trainers</h2>
+            <ul class="list-disc ml-6 mt-2">
+              ${data.trainers.map(t => `<li>${t}</li>`).join("")}
+            </ul>
+          </section>
+        `;
+      }, 0);
+    }
+
+    renderDanceDetails(danceName);
+  </script>
+</body>
+</html>
