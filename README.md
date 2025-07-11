@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Tribal Dances of India - Mini Project
 
 This is a mini project showcasing the cultural richness of India's tribal dances using a web portal.
@@ -43,3 +44,6 @@ docker run -p 5000:5000 tribal-dances-app
 ---
 **Project by:** Sindhu Reddy  
 **GitHub:** https://github.com/Sindhu2949/MiniProject_TribalDancesofIndia
+=======
+# MiniProject_TribalDancesofIndia
+>>>>>>> 31c2c20fd369b1b79ae8e63b45d02e912b89816a
